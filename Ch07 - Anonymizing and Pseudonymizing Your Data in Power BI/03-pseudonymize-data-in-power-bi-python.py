@@ -88,7 +88,7 @@ def anonymizeName(text_to_anonymize, country):
 # dataset = pd.read_excel(r'D:\<your-path>\Chapter06\CustomersCreditCardAttempts.xlsx', engine='openpyxl')
 
 # Load mapping dictionaries from PKL files if they exist, otherwise create empty dictionaries
-pkls_path = r'C:\Users\lucazav\OneDrive\MVP\PacktBook\Code\Extending-Power-BI-with-Python-and-R-2nd-edition\Ch07 - Anonymizing and Pseudonymizing Your Data in Power BI\pkls'
+pkls_path = r'C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch07 - Anonymizing and Pseudonymizing Your Data in Power BI\pkls'
 emails_dict_pkl_path = os.path.join(pkls_path, 'emails_dict.pkl')
 names_dict_pkl_path = os.path.join(pkls_path, 'names_dict.pkl')
 

@@ -6,15 +6,7 @@ library(stringr)
 
 anonymizeEmails <- function(text_to_anonymize, country) {
     
-    # Since {charlatan} doesn't allow the use of Italy, this if/else statement was added. In a real world scenario,
-    # you would want to use something more robust, but this allows you to run the code without errors.
-    
-    if (country == 'ITALY') {
-        locale <- 'en_US'
-    }
-    else {
-        locale <- faker_locales_dict[[country]]
-    }
+    locale <- faker_locales_dict[[country]]
     
     matched_results <- spacy_parse(text_to_anonymize, pos = TRUE, additional_attributes = c("like_email")) %>%
         filter(like_email == TRUE) %>% 
@@ -55,15 +47,7 @@ anonymizeEmails <- function(text_to_anonymize, country) {
 
 anonymizeNames <- function(text_to_anonymize, country) {
     
-    # Since {charlatan} doesn't allow the use of Italy, this if/else statement was added. In a real world scenario,
-    # you would want to use something more robust, but this allows you to run the code without errors.
-    
-    if (country == 'ITALY') {
-        locale <- 'en_US'
-    }
-    else {
-        locale <- faker_locales_dict[[country]]
-    }
+    locale <- faker_locales_dict[[country]]
     
     matched_patterns <- spacy_parse(text_to_anonymize, pos = TRUE, entity = TRUE) %>% 
         entity_consolidate(concatenator = " ") %>% 
@@ -122,7 +106,8 @@ faker_locales_dict <- list(
 )
 
 # Load mapping lists from RDS files if they exist, otherwise create empty lists
-rds_path             <- "<your-path>/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch07 - Anonymizing and Pseudonymizing Your Data in Power BI/RDSs"
+# rds_path             <- "<your-path>/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch07 - Anonymizing and Pseudonymizing Your Data in Power BI/RDSs"
+rds_path             <- "C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch07 - Anonymizing and Pseudonymizing Your Data in Power BI/RDSs"
 emails_list_rds_path <- file.path(rds_path,  'emails_list.rds')
 names_list_rds_path  <- file.path(rds_path , 'names_list.rds')
 
@@ -140,8 +125,9 @@ if (file.exists(names_list_rds_path)){
 
 # For testing purpose you can load the Excel content directly here
 # # Load the Excel content in a dataframe
-# library(readxl)
-# dataset <- read_xlsx("<your-path>/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch07 - Anonymizing and Pseudonymizing Your Data in Power BI/CustomersCreditCardAttempts.xlsx")
+library(readxl)
+dataset <- read_xlsx("C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch07 - Anonymizing and Pseudonymizing Your Data in Power BI/CustomersCreditCardAttempts.xlsx")
+# dataset <- read_xlsx("<your-path>/CustomersCreditCardAttempts.xlsx")
 
 # Since we are using two arguments, we need to use map2_chr instead of map_chr. Notice that we also added .y to the 
 # anonymizeNames() and anonymizeEmails() functions for the same reason.
