@@ -8,5 +8,6 @@ data = {
 
 data_df = pd.DataFrame(data)
 
-with pd.ExcelWriter(r'D:\<your-path>\Ch08 - Logging Data from Power BI to External Sources\Python\example-write-named-sheet.xlsx', mode='a') as writer: 
+with pd.ExcelWriter(r'C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch08 - Logging Data from Power BI to External Sources/Python/example-write-named-sheet.xlsx', mode='a') as writer: 
     data_df.to_excel(writer, sheet_name='My data', index = False)
+

@@ -1,14 +1,17 @@
+# Source the secret.py file
+exec(open("secret.py").read())
+
 import pyodbc
 import pandas as pd
-
 
 # Connect to your Azure SQL Database
 conn = pyodbc.connect(
     'Driver={ODBC Driver 17 for SQL Server};'
-    'Server=<your-server-name>.database.windows.net;'
+    f'Server={SERVER_AZURE}.database.windows.net;'
     'Database=SystemsLogging;'
-    'Uid=<your-username>;'
-    'Pwd=<your-password>')
+    f'Uid={UID_AZURE};'
+    f'Pwd={PWD}'
+    )
 
 # Let's empty the WrongEmails table
 cursor = conn.cursor()

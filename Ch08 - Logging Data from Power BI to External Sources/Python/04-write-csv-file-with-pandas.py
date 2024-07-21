@@ -9,5 +9,7 @@ data = {
 
 data_df = pd.DataFrame(data)
 
-data_df.to_csv(r'D:\<your-path>\Ch08 - Logging Data from Power BI to External Sources\Python\example-write.csv',
-               index=False)
+data_df.to_csv(
+    r'C:\R\Extending-Power-BI-with-Python-and-R-2nd-edition\Ch08 - Logging Data from Power BI to External Sources\Python\example-write.csv',
+    index=False
+    )

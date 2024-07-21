@@ -1,7 +1,7 @@
 # %%
 import csv
 
-with open(r'D:\<your-path>\Ch08 - Logging Data from Power BI to External Sources\Python\example-write.csv', mode='w', newline='') as csv_file:
+with open(r'C:\R\Extending-Power-BI-with-Python-and-R-2nd-edition\Ch08 - Logging Data from Power BI to External Sources\Python\example-write.csv', mode='w', newline='') as csv_file:
     csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
     csv_writer.writerow(['Col1', 'Col2', 'Col3'])

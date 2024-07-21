@@ -1,7 +1,6 @@
 library(dplyr)
 library(stringr)
 
-
 regex_local_part        <- r'(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))'
 regex_domain_name       <- r'((([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))'
 regex_domain_ip_address <- r'((\[?[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\]?))'
@@ -11,8 +10,7 @@ pattern_email <- str_glue(
 )
 
 df <- dataset %>% 
-  mutate( isEmailValidFromRegex = as.integer(str_detect(Email, pattern_email)) )
-
+  mutate(isEmailValidFromRegex = as.integer(str_detect(Email, pattern_email)))
 
 date_format <- 'mm-dd-yyyy'
 
@@ -40,4 +38,4 @@ pattern_date <- str_glue(
 )
 
 df <- df %>% 
-  mutate( isDateValidFromRegex = as.integer(str_detect(BannedDate, pattern_date)) )
+  mutate(isDateValidFromRegex = as.integer(str_detect(BannedDate, pattern_date)))
