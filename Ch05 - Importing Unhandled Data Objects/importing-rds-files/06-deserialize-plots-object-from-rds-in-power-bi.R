@@ -2,16 +2,16 @@
 # Function that serializes any object to a raw vector (bytes).
 # Then it transforms bytes into a string of bytes.
 to_string_of_bytes = function(x) {
-  paste(as.character(serialize(x, connection = NULL)), collapse = " ")
+    paste(as.character(serialize(x, connection = NULL)), collapse = " ")
 }
 
 # Function that chops a string 's' into a vector of fixed width character elements.
 str_dice <- function(s, width) {
-  substring(
-    s,
-    seq(1, nchar(s), width),
-    seq(width, nchar(s) + ifelse(nchar(s) %% width > 0, width-1, 0), width)
-  )
+    substring(
+        s,
+        seq(1, nchar(s), width),
+        seq(width, nchar(s) + ifelse(nchar(s) %% width > 0, width-1, 0), width)
+    )
 }
 
 
@@ -36,21 +36,21 @@ plots_df <- data.frame()
 
 # For each country name in the list of string of bytes chunks...
 for (country_name in names(plots_str_vec_lst)) {
-  
-  # ...extract the list of chunks
-  plt_vec = plots_str_vec_lst[[country_name]]
-  
-  # and fill it into a temporary small dataframe
-  tmp_df <- data.frame(
-    country_name = rep(country_name, length(plt_vec)),
-    chunk_id = seq(1,length(plt_vec),1),
-    plot_str = plt_vec,
     
-    stringsAsFactors = FALSE
-  )
-  
-  # Then append the temporary dataframe
-  # to the main one (rbind = rows bind)
-  plots_df <- rbind(plots_df, tmp_df)
-  
+    # ...extract the list of chunks
+    plt_vec = plots_str_vec_lst[[country_name]]
+    
+    # and fill it into a temporary small dataframe
+    tmp_df <- data.frame(
+        country_name = rep(country_name, length(plt_vec)),
+        chunk_id = seq(1,length(plt_vec),1),
+        plot_str = plt_vec,
+        
+        stringsAsFactors = FALSE
+    )
+    
+    # Then append the temporary dataframe
+    # to the main one (rbind = rows bind)
+    plots_df <- rbind(plots_df, tmp_df)
+    
 }

@@ -1,4 +1,3 @@
-
 import pandas as pd
 import pickle
 import os
@@ -6,7 +5,7 @@ import os
 main_path = "."
 
 # Load the 'population.csv' file from the current selected folder
-population_df = pd.read_csv(os.path.join(main_path, "population.csv"))
+population_df = pd.read_csv(os.path.join(main_path, "Ch05 - Importing Unhandled Data Objects/importing-pkl-files/population.csv"))
 
 # Get all the distinct countries in a NumPy array
 # from the population dataframe. If you are confused
@@ -28,4 +27,4 @@ for c in countries:
     nested_population_dict[c] = population_df.loc[ population_df['country'] == c ].filter(['year', 'population']).reset_index(drop=True)
 
 # Picle the entire dictionary and write it to disk
-pickle.dump( nested_population_dict, open(os.path.join(main_path, "nested_population_dict.pkl"), "wb") )
+pickle.dump( nested_population_dict, open(os.path.join(main_path, "Ch05 - Importing Unhandled Data Objects/importing-pkl-files/nested_population_dict.pkl"), "wb") )

@@ -31,5 +31,4 @@ nested_population_tbl
 
 # Let's serialize the nested population tibble
 # in a RDL file in order to share it
-saveRDS(nested_population_tbl, "nested_population_tbl.rds")
-
+saveRDS(nested_population_tbl, "Ch05 - Importing Unhandled Data Objects/importing-rds-files/nested_population_tbl.rds")
