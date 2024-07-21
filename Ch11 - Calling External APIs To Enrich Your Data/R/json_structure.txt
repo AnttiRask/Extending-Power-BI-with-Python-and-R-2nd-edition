@@ -1,0 +1,60 @@
+{
+  "summary": {
+    "query": "1 microsoft way redmond wa 98052",
+    "queryType": "NON_NEAR",
+    "queryTime": 114,
+    "numResults": 1,
+    "offset": 0,
+    "totalResults": 1,
+    "fuzzyLevel": 1
+  },
+  "results": [
+    {
+      "type": "Point Address",
+      "id": "xyU-b3vVzKnm34zjakDnYQ",
+      "score": 0.994520143924002,
+      "matchConfidence": {
+        "score": 0.994520143924002
+      },
+      "address": {
+        "streetNumber": "1",
+        "streetName": "NE One Microsoft Way",
+        "municipality": "Redmond",
+        "countrySecondarySubdivision": "King",
+        "countrySubdivision": "WA",
+        "countrySubdivisionName": "Washington",
+        "countrySubdivisionCode": "WA",
+        "postalCode": "98052",
+        "extendedPostalCode": "98052-6399",
+        "countryCode": "US",
+        "country": "United States",
+        "countryCodeISO3": "USA",
+        "freeformAddress": "1 NE One Microsoft Way, Redmond, WA 98052",
+        "localName": "Redmond"
+      },
+      "position": {
+        "lat": 47.64167,
+        "lon": -122.12565
+      },
+      "viewport": {
+        "topLeftPoint": {
+          "lat": 47.64257,
+          "lon": -122.12698
+        },
+        "btmRightPoint": {
+          "lat": 47.64077,
+          "lon": -122.12432
+        }
+      },
+      "entryPoints": [
+        {
+          "type": "main",
+          "position": {
+            "lat": 47.64186,
+            "lon": -122.12566
+          }
+        }
+      ]
+    }
+  ]
+}

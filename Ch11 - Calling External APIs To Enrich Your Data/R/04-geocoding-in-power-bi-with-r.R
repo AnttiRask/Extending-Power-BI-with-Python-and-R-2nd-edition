@@ -9,69 +9,69 @@ library(tictoc)
 
 
 bing_geocode_via_address <- function(address) {
-  
-  encoded_address <- RCurl::curlPercentEncode(address)
-  
-  full_url <- str_glue('{base_url}query={encoded_address}?key={AUTH_KEY}')
-  
-  r <- GET(full_url)
-  
-  details_content <- content( r, "text", encoding = "UTF-8" )
-  
-  if (r$status_code == 200) {
     
-    details_lst <- tryCatch({
-      
-      details_json <- fromJSON(details_content)
-      
-      # number of resources found, used as index to get the
-      # latest resource
-      num_resources = details_json$resourceSets$estimatedTotal
-      
-      details_lst <- list(
-        numOfResources = num_resources,
-        formattedAddress = details_json$resourceSets$resources[[1]]$address$formattedAddress[num_resources],
-        lat = details_json$resourceSets$resources[[1]]$point$coordinates[[num_resources]][1],
-        lng = details_json$resourceSets$resources[[1]]$point$coordinates[[num_resources]][2],
-        statusDesc = details_json$statusDescription
-      )
-      
-    }, error = function(err) {
-      
-      details_lst <- list(
-        numOfResources = 0,
-        formattedAddress = NA,
-        lat = NA,
-        lng = NA,
-        statusDesc = str_glue('ERROR: {err}')
-      )
-      
-      return(details_lst)
-      
-    })
+    encoded_address <- RCurl::curlPercentEncode(address)
     
-    details_lst$statusCode <- r$status_code
-    details_lst$text <- details_content
-    details_lst$url <- r$url
+    full_url <- str_glue('{base_url}query={encoded_address}?key={AUTH_KEY}')
+    
+    r <- GET(full_url)
+    
+    details_content <- content( r, "text", encoding = "UTF-8" )
+    
+    if (r$status_code == 200) {
+        
+        details_lst <- tryCatch({
+            
+            details_json <- fromJSON(details_content)
+            
+            # number of resources found, used as index to get the
+            # latest resource
+            num_resources = details_json$resourceSets$estimatedTotal
+            
+            details_lst <- list(
+                numOfResources = num_resources,
+                formattedAddress = details_json$resourceSets$resources[[1]]$address$formattedAddress[num_resources],
+                lat = details_json$resourceSets$resources[[1]]$point$coordinates[[num_resources]][1],
+                lng = details_json$resourceSets$resources[[1]]$point$coordinates[[num_resources]][2],
+                statusDesc = details_json$statusDescription
+            )
+            
+        }, error = function(err) {
+            
+            details_lst <- list(
+                numOfResources = 0,
+                formattedAddress = NA,
+                lat = NA,
+                lng = NA,
+                statusDesc = str_glue('ERROR: {err}')
+            )
+            
+            return(details_lst)
+            
+        })
+        
+        details_lst$statusCode <- r$status_code
+        details_lst$text <- details_content
+        details_lst$url <- r$url
+        
+        
+    } else {
+        
+        details_lst <- list(
+            numOfResources = 0,
+            formattedAddress = NA,
+            lat = NA,
+            lng = NA,
+            statusDesc = str_glue('ERROR!'),
+            statusCode = r$status_code,
+            text = details_content,
+            url = r$url
+        )
+        
+    }
     
     
-  } else {
-    
-    details_lst <- list(
-      numOfResources = 0,
-      formattedAddress = NA,
-      lat = NA,
-      lng = NA,
-      statusDesc = str_glue('ERROR!'),
-      statusCode = r$status_code,
-      text = details_content,
-      url = r$url
-    )
-    
-  }
-  
-  
-  return( details_lst )
+    return( details_lst )
 }
 
 
@@ -90,7 +90,7 @@ tbl <- tbl_orig %>% select('full_address','lat_true','lon_true')
 
 tic()
 tbl_enriched <- tbl %>%
-  pull( full_address ) %>% 
-  map_dfr( ~ bing_geocode_via_address(.x) ) %>% 
-  bind_cols( tbl, . )
+    pull( full_address ) %>% 
+    map_dfr( ~ bing_geocode_via_address(.x) ) %>% 
+    bind_cols( tbl, . )
 toc()

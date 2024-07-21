@@ -70,7 +70,7 @@ bing_geocode_via_address <- function(address) {
         
     }
     
-
+    
     return( details_lst )
 }
 
@@ -86,7 +86,7 @@ AUTH_KEY = Sys.getenv('BINGMAPS_API_KEY')
 
 
 tbl_orig <- read_csv(r'{D:\<your-path>\Ch11 - Calling External APIs To Enrich Your Data\geocoding_test_data.csv}',
-                    locale = locale(encoding = 'ISO-8859-1'))
+                     locale = locale(encoding = 'ISO-8859-1'))
 
 tbl <- tbl_orig %>% select('full_address','lat_true','lon_true')
 
@@ -99,4 +99,3 @@ toc()
 
 
 tbl_enriched
-
