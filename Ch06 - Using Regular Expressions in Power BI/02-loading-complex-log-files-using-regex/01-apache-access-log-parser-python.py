@@ -2,7 +2,7 @@ import pandas as pd
 import re
 
 
-with open('D:/<your-path>/Chapter05/loading-complex-log-files-using-regex/apache_logs.txt', 'r') as f:
+with open('C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch06 - Using Regular Expressions in Power BI/02-loading-complex-log-files-using-regex/apache_logs.txt', 'r') as f:
     access_log_lines = f.readlines()
 
 # Define a regex for the information (variables) contained in each row of the log

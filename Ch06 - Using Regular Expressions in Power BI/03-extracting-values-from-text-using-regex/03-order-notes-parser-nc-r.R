@@ -1,9 +1,9 @@
-
-
+library(dplyr)
+library(lubridate)
 library(nc)
-
 library(readxl)
-dataset <- read_xlsx(r"{C:\Users\lucazav\OneDrive\MVP\PacktBook\Code\Extending-Power-BI-with-Python-and-R-2nd-edition\Ch06 - Using Regular Expressions in Power BI\OrderNotes.xlsx}")
+
+dataset   <- read_xlsx(r"{C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch06 - Using Regular Expressions in Power BI\OrderNotes.xlsx}")
 
 notes_vec <- dataset$Notes
 
@@ -34,4 +34,16 @@ pattern <- nc::alternatives_with_shared_groups(
 )
 
 match.dt <- nc::capture_first_vec(notes_vec, pattern)
-print(match.dt, class=TRUE)
+# print(match.dt, class=TRUE)
+match.df <- as.data.frame(match.dt)
+df       <- bind_cols(dataset, match.df) %>%
+    mutate(
+        RefundDate = as_date(date)
+    ) %>%
+    select(
+        OrderNumber,
+        Notes,
+        RefundAmount = amount,
+        RefundReason = reason,
+        RefundDate
+    )

@@ -63,7 +63,6 @@ pattern <- paste0(regex_parts_template, collapse = '')
 
 extracted_df <- data.frame( str_match_named( dataset$Notes, pattern = pattern )  )
 
-
 df <- dataset %>% 
   bind_cols(
     extracted_df %>%

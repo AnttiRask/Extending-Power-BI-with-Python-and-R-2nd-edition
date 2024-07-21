@@ -33,4 +33,4 @@ pattern <- str_glue(
 )
 
 df <- dataset %>% 
-  mutate( isDateValidFromRegex = as.integer(str_detect(BannedDate, pattern)) )
+  mutate(isDateValidFromRegex = as.integer(str_detect(BannedDate, pattern)))
