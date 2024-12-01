@@ -1,4 +1,3 @@
-# %%
 import urllib.request
 import json
 import os
@@ -6,17 +5,15 @@ import ssl
 import numpy as np
 import pandas as pd
 
+main_path = "C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch17 - Using Machine Learning Without Premium or Embedded Capacity"
 
-# %%
 def allowSelfSignedHttps(allowed):
     # bypass the server certificate verification on client side
     if allowed and not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None):
         ssl._create_default_https_context = ssl._create_unverified_context
 
-
 def ExtractElementOfSublist(lst, idx):
     return [item[idx] for item in lst]
-
 
 def consumeAzureMLEndpoint(url, api_key, obs_df, threshold=0.5):
     # Request data goes here
@@ -60,40 +57,29 @@ def consumeAzureMLEndpoint(url, api_key, obs_df, threshold=0.5):
     
     return result
 
-
-# %%
 # #############################################################################################
 # # Set up environment variables separately for security reasons. Uncomment to use this code.
 # #############################################################################################
-# os.environ['ENDPOINT_URL'] = '<your-endpoint-url>'
+# os.environ['ENDPOINT_URL']     = '<your-endpoint-url>'
 # os.environ['ENDPOINT_API_KEY'] = '<your-api-key>'
 # #############################################################################################
 
-# %%
 allowSelfSignedHttps(True) # this line is needed if you use self-signed certificate in your scoring service.
 
-# %%
 url = os.environ.get('ENDPOINT_URL')
 api_key = os.environ.get('ENDPOINT_API_KEY')
 
 if not api_key or (api_key == '<your-endpoint-key>'):
     raise Exception("A key should be provided to invoke the endpoint")
 
-# %%
 # # Uncomment this code if you're not using it in Power BI
 # # in order to load the imputed test dataset
-# dataset = pd.read_csv(r'C:\<your-path>\Ch17 - Using Machine Learning Without Premium or Embedded Capacity\titanic-test.csv',
-#                       index_col=False)
+dataset = pd.read_csv(os.path.join(main_path, "titanic-test.csv"), index_col = False)
 
-# %%
 obs = dataset.drop('Survived',axis=1)
 
-# %%
 predictions = consumeAzureMLEndpoint(url, api_key, obs, 0.5)
 predictions
 
-# %%
 scored_df = pd.concat([dataset, predictions],axis=1)
 scored_df
-
-# %%

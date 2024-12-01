@@ -79,18 +79,16 @@ def serializeModelsToStringDataframe(models_dict):
     return model_ids_df, models_df
 
 
-main_path = r'C:\<your-path>\Ch17 - Using Machine Learning Without Premium or Embedded Capacity'
+main_path = "C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch17 - Using Machine Learning Without Premium or Embedded Capacity"
 
 # In this case we have only one model. So let's unserialize it as model_01.
 # Then let's create a dictionary containing the models (just one in this case)
 # Remeber you mustn't add the extension .pkl
-with open(os.path.join(main_path, r'Python\titanic-best-model-flaml.pkl'), 'rb') as f:
+with open(os.path.join(main_path, "titanic-best-model-flaml.pkl"), 'rb') as f:
     model_01 = pickle.load(f)
 
 models_dict = {}
 models_dict['model01'] = model_01
 
-
 # Get the dataframe of model IDs and the dataframe of serialized models
 model_ids_df, models_df = serializeModelsToStringDataframe(models_dict)
-

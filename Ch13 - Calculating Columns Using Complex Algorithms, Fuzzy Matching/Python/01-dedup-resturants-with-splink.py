@@ -1,4 +1,3 @@
-# %%
 import os
 import re
 import numpy as np
@@ -8,7 +7,6 @@ from splink.duckdb.linker import DuckDBLinker
 from splink.duckdb.comparison_template_library import name_comparison
 import splink.duckdb.comparison_library as cl
 
-# %%
 def clean_string(input_string):
     # Convert to lower case
     cleaned_string = input_string.lower()
@@ -21,23 +19,17 @@ def clean_string(input_string):
     
     return cleaned_string
 
-
-# %%
 # https://www.cs.utexas.edu/users/ml/riddle/data.html
 
-main_path = r'C:\<your path>\Ch13 - Calculating Columns Using Complex Algorithms, Fuzzy Matching'
+main_path = 'C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch13 - Calculating Columns Using Complex Algorithms, Fuzzy Matching'
 
-restaurants_df = pd.read_csv(os.path.join(main_path, 'restaurants.csv'),
-                             skipinitialspace=True)
+restaurants_df = pd.read_csv(os.path.join(main_path, 'restaurants.csv'), skipinitialspace = True)
 
 restaurants_df["name"] = restaurants_df["name"].apply(lambda x: clean_string(x))
 restaurants_df["addr"] = restaurants_df["addr"].apply(lambda x: clean_string(x))
 restaurants_df["city"] = restaurants_df["city"].apply(lambda x: clean_string(x))
 
 restaurants_df
-
-
-# %%
 
 settings = {
     "link_type": "dedupe_only",
@@ -60,40 +52,32 @@ settings = {
 
 linker = DuckDBLinker(restaurants_df, settings)
 
-
-# %%
 linker.estimate_u_using_random_sampling(max_pairs=1e6)
 
-# %%
 training_blocking_rule = "l.name = r.name and l.addr = r.addr"
 training_session_names = linker.estimate_parameters_using_expectation_maximisation(training_blocking_rule)
 
-# %%
 training_blocking_rule = "l.name = r.name and l.city = r.city"
 training_session_names = linker.estimate_parameters_using_expectation_maximisation(training_blocking_rule)
 
-# %%
 training_blocking_rule = "l.city = r.city and l.addr = r.addr"
 training_session_names = linker.estimate_parameters_using_expectation_maximisation(training_blocking_rule)
 
-# %%
+
 #linker.match_weights_chart()
 linker.m_u_parameters_chart()
 
-# %%
 df_predict = linker.predict()
 
 matches_df = df_predict.as_pandas_dataframe()
 matches_df
 
-# %%
+
 low_prob_matches_dict = matches_df[
     (matches_df["match_weight"] >= 0) & (matches_df["match_weight"] < 1)].to_dict(orient="records")
 
 linker.waterfall_chart(low_prob_matches_dict)
 
-
-# %%
 truth_step0_df = restaurants_df.merge(restaurants_df, how='inner', on='class').query('id_x != id_y')
 
 truth_step0_df['row_num'] = truth_step0_df.reset_index().index
@@ -107,7 +91,6 @@ truth_df = truth_df.rename(columns={'id_x_x': 'id_l', 'id_x_y': 'id_r'})[['id_l'
 
 truth_df
 
-# %%
 matches_df = matches_df.drop(columns=['match_key']).drop_duplicates().merge(truth_df, how='left', on=['id_l', 'id_r'])
 matches_df['truth'] = matches_df['truth'].apply(lambda x: True if x == True else False)
 
@@ -116,7 +99,6 @@ matches_df['match'] = np.where(matches_df['match_weight'] >= weight_threshold, T
 
 matches_df
 
-# %%
 # pass predicted and original labels to this function
 def confusion_matrix(pred,original):
     matrix=np.zeros((2,2), dtype=np.int32)

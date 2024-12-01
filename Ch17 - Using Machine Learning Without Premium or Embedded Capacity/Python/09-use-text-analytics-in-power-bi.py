@@ -1,10 +1,8 @@
-# %%
 import os
 import pandas as pd
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
 
-# %%
 def authenticate_client():
     ta_credential = AzureKeyCredential(key)
     text_analytics_client = TextAnalyticsClient(
@@ -49,12 +47,10 @@ def sentimentOfColumn(df,col_name):
     
     return pd.concat([df,sentiment_df],axis=1)
 
-# %%
 # # Uncomment this if not using in Power BI
 # dataset = pd.read_csv(r'C:\<your-path>\Ch17 - Using Machine Learning Without Premium or Embedded Capacity\FabrikamComments.csv')
 # dataset
 
-# %%
 # #############################################################################################
 # # Set up environment variables separately for security reasons. Uncomment to use this code.
 # #############################################################################################
@@ -62,7 +58,6 @@ def sentimentOfColumn(df,col_name):
 # os.environ['LANGUAGE_API_KEY'] = '<your-api-key>'
 # #############################################################################################
 
-# %%
 endpoint = os.environ.get('LANGUAGE_URL')
 key = os.environ.get('LANGUAGE_API_KEY')
 
@@ -71,5 +66,3 @@ if not key:
 
 sentiment_enriched_df = sentimentOfColumn(dataset, col_name='comment')
 sentiment_enriched_df
-
-# %%

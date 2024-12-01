@@ -1,9 +1,7 @@
 library(readr)
 library(tidymodels)
 
-
-project_folder <- r'{C:\<your-path>\Ch17 - Using Machine Learning Without Premium or Embedded Capacity\}'
-
+project_folder  <- "C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch17 - Using Machine Learning Without Premium or Embedded Capacity/"
 titanic_testing <- read_csv(file.path(project_folder, 'titanic-test.csv'))
 
 # Unserialize the model previously trained

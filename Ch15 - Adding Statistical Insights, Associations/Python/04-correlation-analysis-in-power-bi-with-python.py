@@ -1,8 +1,6 @@
-
-import pandas as pd
 import numpy as np
+import pandas as pd
 from dython.nominal import associations
-
 
 # Calculate the correlations for the 'dataset' dataframe
 corr_df = associations(dataset, nom_nom_assoc = 'theil', num_num_assoc = 'pearson', 

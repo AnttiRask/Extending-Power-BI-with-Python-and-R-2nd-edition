@@ -1,15 +1,14 @@
-
 library(dplyr)
 library(tidyr)
 library(ompr)
 library(ompr.roi)
 library(ROI.plugin.glpk)
 
-
 n_warehouses <- shipping_cost_df %>% 
   distinct(warehouse_name) %>% 
   count() %>% 
   pull(n)
+
 n_countries <- shipping_cost_df %>% 
   distinct(country_name) %>% 
   count() %>% 
@@ -17,15 +16,17 @@ n_countries <- shipping_cost_df %>%
 
 warehouse_supply <- warehouse_supply_df %>% 
   pull(product_qty)
+
 country_demands <- country_demands_df %>% 
   pull(product_qty)
-cost_matrix <- data.matrix(
-  shipping_cost_df %>% 
-    pivot_wider( names_from = country_name, values_from = shipping_cost ) %>% 
-    select( -warehouse_name )
-)
-rownames(cost_matrix) <- warehouse_supply_df %>% pull(warehouse_name)
 
+cost_matrix <- data.matrix(
+    shipping_cost_df %>% 
+    pivot_wider(names_from = country_name, values_from = shipping_cost) %>% 
+    select(-warehouse_name)
+)
+
+rownames(cost_matrix) <- warehouse_supply_df %>% pull(warehouse_name)
 
 model <- MIPModel() %>% 
     add_variable( x[i, j], i = 1:n_warehouses, j = 1:n_countries, type = "integer", lb = 0 ) %>% 
@@ -36,18 +37,14 @@ model <- MIPModel() %>%
 result <- model %>% 
     solve_model(with_ROI(solver = 'glpk'))
 
-
-
-countries <- colnames(cost_matrix)
+countries  <- colnames(cost_matrix)
 warehouses <- rownames(cost_matrix)
-
 
 decision_var_results <- result$solution[ sort(names(result$solution)) ]
 
 result_df <- data.frame(
-    warehouse_name = rep(warehouses, each=n_countries),
-    country_name = rep(countries, times=n_warehouses),
-    shipped_qty = decision_var_results,
-    cost = as.vector(t(cost_matrix)) * decision_var_results
+    warehouse_name = rep(warehouses, each = n_countries),
+    country_name   = rep(countries, times = n_warehouses),
+    shipped_qty    = decision_var_results,
+    cost           = as.vector(t(cost_matrix)) * decision_var_results
 )
-

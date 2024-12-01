@@ -1,6 +1,4 @@
-
-# Function that serializes any object to a raw vector (bytes).
-# Then it transforms bytes into a string of bytes.
+# Function that serializes any object to a raw vector (bytes). Then it transforms bytes into a string of bytes.
 to_string_of_bytes = function(x) {
   paste(as.character(serialize(x, connection = NULL)), collapse = " ")
 }
@@ -14,16 +12,13 @@ str_dice <- function(s, width) {
   )
 }
 
-
 serializeModelsToStringDataframe <- function(models_lst) {
   
-  # Apply to each element of the plots list the function to_string_of_bytes.
-  # You'll have a list of serialized plots in string of bytes.
+  # Apply to each element of the plots list the function to_string_of_bytes. You'll have a list of serialized plots in string of bytes.
   models_str_lst <- lapply(models_lst, to_string_of_bytes)
   
   # Split each string of bytes in chunks of 10K, in order to avoid the string length limitations in the R Visual
   models_str_vec_lst <- lapply(models_str_lst, str_dice, width = 10000)
-  
   
   # Create an empty dataframe
   models_df <- data.frame()
@@ -36,44 +31,32 @@ serializeModelsToStringDataframe <- function(models_lst) {
     
     # and fill it into a temporary small dataframe
     tmp_df <- data.frame(
-      model_id = rep(model_id, length(model_vec)),
-      chunk_id = seq(1,length(model_vec),1),
-      model_str = model_vec,
-      
+      model_id         = rep(model_id, length(model_vec)),
+      chunk_id         = seq(1, length(model_vec), 1),
+      model_str        = model_vec,
       stringsAsFactors = FALSE
     )
     
-    # Then append the temporary dataframe
-    # to the main one (rbind = rows bind)
+    # Then append the temporary dataframe to the main one (rbind = rows bind)
     models_df <- rbind(models_df, tmp_df)
-    
   }
   
-  models_ids_df <- data.frame( model_id = names(models_lst) )
+  models_ids_df <- data.frame(model_id = names(models_lst))
   
   return(
     list(
       model_ids_df = models_ids_df,
-      models_df = models_df
+      models_df    = models_df
     )
   )
   
 }
 
+project_folder <- "C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch17 - Using Machine Learning Without Premium or Embedded Capacity/"
 
-
-
-project_folder <- r'{C:\<your-path>\Ch17 - Using Machine Learning Without Premium or Embedded Capacity\}'
-
-# In this case we have only one model. So let's unserialize it as model_01.
-# Then let's create a named list containing the models (just one in this case)
-model_01 <- readRDS(file.path(project_folder, r'{R\titanic-model.RDS}'))
-
-models_lst <- list('model01' = model_01)
-
-
+# In this case we have only one model. So let's unserialize it as model_01. Then let's create a named list containing the models (just one in this case)
+model_01       <- readRDS(file.path(project_folder, r'{R\titanic-model.RDS}'))
+models_lst     <- list('model01' = model_01)
 str_models_lst <- serializeModelsToStringDataframe(models_lst)
-
-model_ids_df <- str_models_lst[['model_ids_df']]
-models_df <- str_models_lst[['models_df']]
-
+model_ids_df   <- str_models_lst[['model_ids_df']]
+models_df      <- str_models_lst[['models_df']]

@@ -3,17 +3,14 @@ import pickle
 from pycaret.classification import *
 import matplotlib.pyplot as plt
 
-
 def serialize(obj):
     return obj.encode('latin1')
 
 def unserialize(obj):
     return obj.decode('latin1')
 
-
 def toUnpickle(obj):
     return pickle.loads(obj)
-
 
 def toUncut(obj):
     return "".join(obj)
@@ -36,10 +33,8 @@ selected_model
 input_tuple_df = dataset.copy()[['Age', 'Embarked', 'Fare', 'Parch', 'Pclass', 'Sex', 'SibSp']].drop_duplicates()
 input_tuple_df
 
-
 prediction_label = predict_model(selected_model,data = input_tuple_df,verbose=True)['prediction_label'].values[0]
 prediction_score = predict_model(selected_model,data = input_tuple_df,verbose=True)['prediction_score'].values[0]
-
 
 plt.text(0.5, 0.5, f'Survived = {prediction_label} (prob = {prediction_score})',
          ha='center', va='center', size=20)
@@ -49,4 +44,4 @@ frame.axes.get_xaxis().set_visible(False)
 frame.axes.get_yaxis().set_visible(False)
 
 plt.show()
-
+plt.clf()

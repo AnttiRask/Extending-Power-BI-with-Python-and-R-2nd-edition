@@ -1,11 +1,9 @@
-
-library(imputeTS)
 library(dplyr)
+library(imputeTS)
 library(lubridate)
 
-
 air_df <- dataset %>% 
-    mutate( date = ymd(date) )
+    mutate(date = ymd(date))
 
 #-- Imputations
 air_df$locf <- na_locf(air_df$value)
@@ -20,5 +18,4 @@ air_df$ewma_9 <- na_ma(air_df$value, k = 9, maxgap = 3)
 air_df$linear <- na_interpolation(air_df$value, option = 'linear', maxgap = 3)
 air_df$spline <- na_interpolation(air_df$value, option = 'spline', maxgap = 3)
 
-air_df$seadec <- na_seadec(air_df$value, find_frequency = T, maxgap = 3)
-
+air_df$seadec <- na_seadec(air_df$value, find_frequency = TRUE, maxgap = 3)

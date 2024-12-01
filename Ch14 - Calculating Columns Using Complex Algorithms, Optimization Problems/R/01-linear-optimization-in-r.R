@@ -1,21 +1,26 @@
-
 library(dplyr)
-library(tidyr)
-library(readxl)
 library(ompr)
 library(ompr.roi)
+library(readxl)
 library(ROI.plugin.glpk)
+library(tidyr)
 
+path <- "C:/R/Extending-Power-BI-with-Python-and-R-2nd-edition/Ch14 - Calculating Columns Using Complex Algorithms, Optimization Problems/RetailData.xlsx"
 
-warehouse_supply_tbl = read_xlsx(r'{D:\<your-path>\Ch14 - Calculating Columns Using Complex Algorithms, Optimization Problems\RetailData.xlsx}',
-                                 sheet = 'Warehouse Supply')
+warehouse_supply_tbl = read_xlsx(
+    path,    
+    sheet = 'Warehouse Supply'
+)
 
-country_demands_tbl = read_xlsx(r'{D:\<your-path>\Ch14 - Calculating Columns Using Complex Algorithms, Optimization Problems\RetailData.xlsx}',
-                                sheet = 'Country Demand')
+country_demands_tbl = read_xlsx(
+    path,
+    sheet = 'Country Demand'
+)
 
-cost_matrix_tbl = read_xlsx(r'{D:\<your-path>\Ch14 - Calculating Columns Using Complex Algorithms, Optimization Problems\RetailData.xlsx}',
-                            sheet = 'Shipping Cost')
-
+cost_matrix_tbl = read_xlsx(
+    path,
+    sheet = 'Shipping Cost'
+)
 
 n_warehouses <- cost_matrix_tbl %>% 
     distinct(warehouse_name) %>% 
@@ -27,25 +32,24 @@ n_countries <- cost_matrix_tbl %>%
     count() %>% 
     pull(n)
 
-
 warehouse_supply <- warehouse_supply_tbl %>% 
     pull(product_qty)
 
 country_demands <- country_demands_tbl %>% 
     pull(product_qty)
 
-# Get the cost matrix from the tibble
-# using the pivot_wider function
+# Get the cost matrix from the tibble using the pivot_wider function
 cost_matrix <- data.matrix(
     cost_matrix_tbl %>% 
-        pivot_wider( names_from = country_name, values_from = shipping_cost ) %>% 
-        select( -warehouse_name )
+        pivot_wider(names_from = country_name, values_from = shipping_cost) %>% 
+        select(-warehouse_name)
 )
+
 rownames(cost_matrix) <- warehouse_supply_tbl %>% pull(warehouse_name)
 cost_matrix
 
 # Define the model in the ompr language
-# It's quite eas to do that following the mathematical model shown in the book
+# It's quite easy to do that following the mathematical model shown in the book
 model <- MIPModel() %>% 
     # define the x integer variables, paying attention to define also the lower bound of 0,
     # otherwise the problem is not feasible using the glpk solver
@@ -60,7 +64,6 @@ model <- MIPModel() %>%
     # add customer demand constraints
     add_constraint( sum_expr(x[i, j], i = 1:n_warehouses) >= country_demands[j], j = 1:n_countries )
 
-
 # Let's check the entered model
 
 # Problem type
@@ -71,7 +74,6 @@ objective_function(model)
 
 # Constraints
 extract_constraints(model)
-
 
 #Let's solve the model using the glpk engine
 result <- model %>% 
@@ -84,7 +86,7 @@ result$status
 result$objective_value
 
 # Decision variables valued
-decision_var_results <- matrix(result$solution, nrow = n_warehouses, ncol = n_countries, )
+decision_var_results           <- matrix(result$solution, nrow = n_warehouses, ncol = n_countries, )
 rownames(decision_var_results) <- warehouse_supply_tbl %>% pull(warehouse_name)
 colnames(decision_var_results) <- country_demands_tbl %>% pull(country_name)
 

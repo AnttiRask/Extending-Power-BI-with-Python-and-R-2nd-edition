@@ -1,12 +1,8 @@
-# THIS SCRIPT IS SUPPOSED TO RUN IN A JUPYTER NOTEBOOK (WE USED VS CODE)
-
-# %%
 import pandas as pd
 import missingno as msno
 from upsetplot import UpSet
 import matplotlib.pyplot as plt
 
-# %%
 def miss_var_summary(data):
     n_missing = data.isnull().sum()
     percent_missing = data.isnull().sum() * 100 / len(data)
@@ -34,28 +30,18 @@ def upsetplot_miss(data):
     return(upset)
 
 
-# %%
 plt.rcParams['figure.dpi'] = 300
 plt.rcParams['savefig.dpi'] = 300
 
 df = pd.read_csv('http://bit.ly/titanic-dataset-csv')
 
-# %%
 msno.matrix(df)
-# In case you're not using a Jupyter notebook run also the following:
-# plt.show()
+plt.show()
+plt.clf()
 
-# %%
 miss_var_summary(df)
-
-# %%
-plt = upsetplot_miss(df)
-plt.plot()
-
-# In case you're not using a Jupyter notebook run the following instead:
-# chart = upsetplot_miss(df)
-# chart.plot()
-# plt.plot = chart.plot
-# plt.show()
-
-# %%
+chart = upsetplot_miss(df)
+chart.plot()
+plt.plot = chart.plot
+plt.show()
+plt.clf()

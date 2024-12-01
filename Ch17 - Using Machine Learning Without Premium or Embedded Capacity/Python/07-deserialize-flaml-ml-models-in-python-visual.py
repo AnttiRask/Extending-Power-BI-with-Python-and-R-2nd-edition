@@ -2,17 +2,14 @@ import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
 
-
 def serialize(obj):
     return obj.encode('latin1')
 
 def unserialize(obj):
     return obj.decode('latin1')
 
-
 def toUnpickle(obj):
     return pickle.loads(obj)
-
 
 def toUncut(obj):
     return "".join(obj)
@@ -38,13 +35,10 @@ input_tuple_df
 prediction_label = selected_model.predict(input_tuple_df)[0]
 prediction_score = selected_model.predict_proba(input_tuple_df)[:,1][0]
 
-
 plt.text(0.5, 0.5, f'Survived = {prediction_label} (prob = {prediction_score})',
          ha='center', va='center', size=20)
 
 frame = plt.gca()
 frame.axes.get_xaxis().set_visible(False)
 frame.axes.get_yaxis().set_visible(False)
-
 plt.show()
-
